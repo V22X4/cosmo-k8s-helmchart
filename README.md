@@ -1,37 +1,37 @@
-# Cosmocloud Deploy Helm Chart
+# Cosmocloud DevOps Intern Helm Chart Submission
 
-## Overview
-This Helm chart deploys a complete application stack consisting of:
+## Project Overview
+Kubernetes deployment for a three-service application using Helm:
 - Backend Service
 - Frontend Service
 - Redis Database
 
-## Deployment Details
+## Deployment Specifications
 - Namespace: `default`
-- Backend: 
-  - Image: `shreybatra/sample-backend`
-  - Service Type: ClusterIP
-  - Port: 8000
-  - Environment: `REDIS_URI=redis://redis-svc:6379`
+- Replicas: 1 per service
+- Services:
+  * Backend: ClusterIP (Port 8000)
+  * Frontend: NodePort (Port 5175, NodePort 31000)
+  * Redis: ClusterIP (Port 6379)
 
-- Frontend:
-  - Image: `shreybatra/sample-frontend`
-  - Service Type: NodePort
-  - Port: 5175
-  - NodePort: 31000
-  - Environment: `BACKEND_URL=http://backend-svc:8000`
+## Prerequisites
+- Kubernetes Cluster
+- Helm
+- kubectl
 
-- Redis:
-  - Image: `redis`
-  - Service Type: ClusterIP
-  - Port: 6379
-
-## Deployment Instructions
+## Installation
 ```bash
-helm install testapp cosmocloud-deploy --atomic --timeout 30s
+helm install testapp cosmocloud-deploy
 ```
 
-## Notes
-- Each service is deployed with 1 replica
-- Services are configured to communicate with each other via internal Kubernetes DNS
-- Environment variables are set to enable proper inter-service communication
+## Service Communication
+- Backend connects to Redis via `redis://redis-svc:6379`
+- Frontend connects to Backend via `http://backend-svc:8000`
+
+## Access
+Frontend accessible via NodePort: `localhost:31000`
+
+## Images
+- Backend: `shreybatra/sample-backend`
+- Frontend: `shreybatra/sample-frontend`
+- Database: `redis`
